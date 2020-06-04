@@ -1,7 +1,7 @@
 /************************************************************************/
-/* @Author	Kliments Krasovskis                                         */
-/* @Company	Daugavpils University                                       */
-/* @MCU		Atmega328P                                                  */
+/* @Author     Kliments Krasovskis                                      */
+/* @Company    Daugavpils University                                    */
+/* @MCU        Atmega328P                                               */
 /*                                                                      */
 /*              Used I2C LCD Display 16x2 and DHT-11 sensor             */
 /*               Signal wire from DHT-11 connected to PD5               */
