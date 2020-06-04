@@ -1,3 +1,13 @@
+/************************************************************************/
+/* @Author	Kliments Krasovskis											*/
+/* @Company	Daugavpils University										*/
+/* @MCU		Atmega328P													*/
+/*																		*/
+/*				Used I2C LCD Display 16x2 and DHT-11 sensor             */
+/*				 Signal wire from DHT-11 connected to PD5				*/
+/*			   I2C display uses SDA and SCL pins (A4 and A5)			*/
+/************************************************************************/
+
 #define _LCD_FIRST_ROW          0b10000000
 #define _LCD_SECOND_ROW         0b11000000
 
@@ -37,7 +47,7 @@ void Request()
 	PORTD |= (1<<DHT_SENSOR);
 }
 
-void Response()				/* receive response from DHT11 */
+void Response()
 {
 	DDRD &= ~(1<<DHT_SENSOR);
 	while(PIND & (1<<DHT_SENSOR));
@@ -45,15 +55,15 @@ void Response()				/* receive response from DHT11 */
 	while(PIND & (1<<DHT_SENSOR));
 }
 
-uint8_t Receive_data()			/* receive data */
+uint8_t Receive_data()
 {
 	for (int q=0; q<8; q++)
 	{
-		while((PIND & (1<<DHT_SENSOR)) == 0);  /* check received bit 0 or 1 */
+		while((PIND & (1<<DHT_SENSOR)) == 0);
 		_delay_us(30);
-		if(PIND & (1<<DHT_SENSOR))/* if high pulse is greater than 30ms */
-		c = (c<<1)|(0x01);	/* then its logic HIGH */
-		else			/* otherwise its logic LOW */
+		if(PIND & (1<<DHT_SENSOR))// if high pulse is greater than 30ms
+		c = (c<<1)|(0x01);	// then its logic HIGH
+		else			// otherwise its logic LOW
 		c = (c<<1);
 		while(PIND & (1<<DHT_SENSOR));
 	}
@@ -90,7 +100,7 @@ void I2C_LCD_Cmd(char out_char) {
 	char hi_n, lo_n;
 	char rs = 0x00;
 
-	hi_n = out_char & 0xF0;
+	hi_n = out_char & 0b11110000;
 	lo_n = (out_char << 4) & 0xF0;
 
 	TWI_Start();
@@ -221,7 +231,6 @@ void responseDht()
 
 int main()
 {
-
 	DDRC = 0x00;
 	PORTC = 0x00;
 
@@ -236,11 +245,11 @@ int main()
 	{
 		Request();
 		Response();
-		I_RH=Receive_data();	/* store first eight bit in I_RH */
-		D_RH=Receive_data();	/* store next eight bit in D_RH */
-		I_Temp=Receive_data();	/* store next eight bit in I_Temp */
-		D_Temp=Receive_data();	/* store next eight bit in D_Temp */
-		CheckSum=Receive_data();/* store next eight bit in CheckSum */
+		I_RH=Receive_data();
+		D_RH=Receive_data();
+		I_Temp=Receive_data();
+		D_Temp=Receive_data();
+		CheckSum=Receive_data();
 		
 		if ((I_RH + D_RH + I_Temp + D_Temp) != CheckSum)
 		{
@@ -259,9 +268,8 @@ int main()
 			I2C_LCD_Out(2,11,data);
 			I2C_LCD_Out(2,13,"C");
 		}
-		
 		_delay_ms(400);
-			I2C_LCD_Cmd(_LCD_CURSOR_OFF);
-			I2C_LCD_Cmd(_LCD_CLEAR);
+		I2C_LCD_Cmd(_LCD_CURSOR_OFF);
+		I2C_LCD_Cmd(_LCD_CLEAR);
 	}
 }
