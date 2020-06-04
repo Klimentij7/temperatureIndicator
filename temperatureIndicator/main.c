@@ -1,19 +1,17 @@
 /************************************************************************/
-/* @Author	Kliments Krasovskis											*/
-/* @Company	Daugavpils University										*/
-/* @MCU		Atmega328P													*/
-/*																		*/
-/*				Used I2C LCD Display 16x2 and DHT-11 sensor             */
-/*				 Signal wire from DHT-11 connected to PD5				*/
-/*			   I2C display uses SDA and SCL pins (A4 and A5)			*/
+/* @Author	Kliments Krasovskis                                         */
+/* @Company	Daugavpils University                                       */
+/* @MCU		Atmega328P                                                  */
+/*                                                                      */
+/*              Used I2C LCD Display 16x2 and DHT-11 sensor             */
+/*               Signal wire from DHT-11 connected to PD5               */
+/*              I2C display uses SDA and SCL pins (A4 and A5)           */
 /************************************************************************/
 
 #define _LCD_FIRST_ROW          0b10000000
 #define _LCD_SECOND_ROW         0b11000000
-
 #define _LCD_CLEAR              0b00000001
 #define _LCD_RETURN_HOME        0b00000002
-
 #define _LCD_CURSOR_OFF         0b00001100
 #define _LCD_UNDERLINE_ON       0b00001110
 #define _LCD_BLINK_CURSOR_ON    0b00001111
